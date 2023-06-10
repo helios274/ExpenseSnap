@@ -1,0 +1,53 @@
+{% extends 'account/base.html' %} {% load static %} {% block title %} - Login
+{%endblock %} {% block content %}
+
+<div class="col-11 col-sm-10 col-md-8 col-lg-6 card border-0 rounded-3 py-3 px-2 px-sm-3 px-md-5">
+  <div class="card-body">
+    <h5><a href="/"><i class="bi bi-house-fill"></i></a></h5>
+    <p class="title text-center">Welcome back!</p>
+    <div class="col text-center mt-4">
+      <form action="{% url 'login' %}" method="POST">
+        {% csrf_token %}
+        <div class="row mb-3">
+          <div class="col">
+            <input
+              type="text"
+              name="username"
+              id="usernameField"
+              class="form-control form-control-lg rounded-pill"
+              placeholder="Username"
+              required
+            />
+          </div>
+        </div>
+        <div class="row mb-3">
+          <div class="col">
+            <input
+              type="password"
+              name="password"
+              id="passwordField"
+              class="form-control form-control-lg rounded-pill"
+              placeholder="New password"
+              required
+            />
+          </div>
+        </div>
+        <hr />
+        <div class="row mb-4">
+          <div class="col">
+            <button id="submitBtn" type="submit" class="button-s1 rounded-pill">
+              Login
+            </button>
+          </div>
+        </div>
+        <div class="row mb-3">
+          <a class="link" href="{% url 'register' %}">Don't have an account? Register here</a>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script src="{% static 'js/login.js' %}"></script>
+
+{% endblock %}

@@ -1,0 +1,137 @@
+{% extends 'base.html' %} {% load static%} {% block title %} - Home
+{%endblock %} {% block content %}
+
+<div class="container-fluid p-2">
+  {% if expenses.count %}
+  <div class="row justify-content-center mx-0 mt-2">
+    <div class="d-flex flex-row">
+      <div class="btn-brass-outline me-2" id="clearBtn">Clear</div>
+      <div class="dropdown">
+        <button
+          class="btn-green-outline dropdown-toggle me-4"
+          type="button"
+          data-bs-toggle="dropdown"
+          aria-expanded="false"
+        >
+          Filter
+        </button>
+        <div class="dropdown-menu stats-filter-card">
+          <form id="filterForm" class="mx-3 my-2">
+            <div class="row mb-3">
+              <div class="col mb-2">
+                <label for="startDate" class="form-label">Start date</label>
+                <input
+                  type="date"
+                  id="startDate"
+                  class="form-control form-control-sm"
+                />
+              </div>
+              <div class="col">
+                <label for="endDate" class="form-label">End date</label>
+                <input
+                  type="date"
+                  id="endDate"
+                  class="form-control form-control-sm"
+                />
+              </div>
+            </div>
+            <div class="row">
+              <div class="col d-flex">
+                <button id="filterBtn" class="btn-green-outline-sm flex-fill">
+                  Apply
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+      <div class="page-title mb-0">Your Stats</div>
+    </div>
+  </div>
+  <div class="row mt-3 justify-content-center mx-0">
+    <div class="col-12 col-md-5 col-lg-3 mb-3 mb-lg-0">
+      <div class="card rounded-1 expense-num-card">
+        <div class="ms-3">
+          <h6 class="title">No. of Expenses</h6>
+          <div id="expenseNumField" class="value"></div>
+          <div id="expenseNumFieldFiltered" class="value"></div>
+        </div>
+      </div>
+    </div>
+    <div class="col-12 col-md-5 col-lg-3 mb-3 mb-lg-0">
+      <div class="card rounded-1 expense-amount-card">
+        <div class="ms-3">
+          <h6 class="title">Total Expense Amount</h6>
+          <div id="expenseSumField" class="value"></div>
+          <div id="expenseSumFieldFiltered" class="value"></div>
+        </div>
+      </div>
+    </div>
+    <div class="col-12 col-md-5 col-lg-3 mb-3 mb-md-0">
+      <div class="card rounded-1 income-card">
+        <div class="ms-3">
+          <h6 class="title">Earnings this month</h6>
+          <div class="value">{{income_this_month}}</div>
+        </div>
+      </div>
+    </div>
+    <div class="col-12 col-md-5 col-lg-3">
+      <div class="card rounded-1 savings-card">
+        <div class="ms-3">
+          <h6 class="title">Savings this month</h6>
+          <div class="value">{{savings_this_month}}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row justify-content-center mx-0 mt-4 mb-3">
+    <div class="col-12 col-md-10 col-lg-7 col-xl-6">
+      <div class="card rounded-1 chart-card">
+        <div class="card-header py-2">Expenses by Category</div>
+        <div class="card-body">
+          <canvas id="chart1"></canvas>
+          <canvas id="barChartFiltered"></canvas>
+        </div>
+      </div>
+    </div>
+    <div class="col-12 col-md-10 col-lg-5 col-xl-6 mt-3 mt-lg-0">
+      <div class="card rounded-1 chart-card">
+        <div class="card-header py-2">Expenses - Incomes</div>
+        <div class="card-body">
+          <canvas id="chart2"></canvas>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  {% else %}
+
+  <h2 class="text-center mt-4">You don't have any expenses or incomes</h2>
+  <div class="col text-center mt-2">
+    <a
+      type="button"
+      class="btn-green"
+      href="{% url 'expense' %}"
+      style="text-decoration: none;"
+    >
+      Go to Expense
+    </a>
+  </div>
+  <div class="col text-center mt-2">
+    <a
+    type="button"
+    class="btn-green"
+    href="{% url 'income' %}"
+    style="text-decoration: none;"
+  >
+    Go to Income
+  </a>
+  </div>
+  {% endif %}
+</div>
+
+<script src="{% static 'js/chart.js' %}"></script>
+<script src="{% static 'js/stats.js' %}"></script>
+
+{% endblock %}

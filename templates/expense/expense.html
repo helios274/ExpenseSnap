@@ -1,0 +1,398 @@
+{% extends 'base.html' %} 
+{% load static%} 
+{% load currency_filters %}
+{% block title %} - expenses
+{%endblock%} {% block content %}
+
+<div class="container-fluid p-2">
+  {% if expenses.count %}
+  <div class="d-flex flex-row justify-content-center mx-3 mx-lg-3 my-3">
+    <!-- Filter Form -->
+    <div
+      class="offcanvas-lg offcanvas-start"
+      tabindex="-1"
+      id="filterOffcanvas"
+      aria-labelledby="filterOffcanvasLabel"
+    >
+      <div class="offcanvas-header">
+        <h5 class="offcanvas-title" id="filterOffcanvasLabel">Filter</h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="offcanvas"
+          data-bs-target="#filterOffcanvas"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="col-lg-11 offcanvas-body flex-column">
+        <form id="filterForm" class="filter-card py-1 py-lg-3 px-3">
+          <h3 class="d-none d-lg-block">Filter</h3>
+          <h6>Category</h6>
+          <ul class="list-group list-group-flush mb-2">
+            {% for category in categories %}
+            <li class="list-group-item">
+              <input
+                type="checkbox"
+                value="{{category.name}}"
+                id="checkbox{{category.name}}"
+                class="form-check-input"
+              />
+              <label for="checkbox{{category.name}}" class="form-check-label"
+                >{{category.name}}</label
+              >
+            </li>
+            {% endfor %}
+          </ul>
+          <div class="row mb-3 gx-lg-2">
+            <h6>Amount</h6>
+            <div class="col">
+              <input
+                type="number"
+                id="minAmount"
+                step=".01"
+                min="0"
+                class="form-control"
+                placeholder="Min"
+              />
+            </div>
+            <div class="col">
+              <input
+                type="number"
+                id="maxAmount"
+                step=".01"
+                min="0"
+                class="form-control"
+                placeholder="Max"
+              />
+            </div>
+          </div>
+          <div class="row mb-3">
+            <div class="col">
+              <label for="startDate" class="form-label">Start date</label>
+              <input type="date" id="startDate" class="form-control" />
+            </div>
+            <div class="col">
+              <label for="endDate" class="form-label">End date</label>
+              <input type="date" id="endDate" class="form-control" />
+            </div>
+          </div>
+          <div class="row">
+            <div class="col d-flex">
+              <button
+                id="clearBtn"
+                class="btn-brass-outline flex-fill"
+                data-bs-dismiss="offcanvas"
+                data-bs-target="#filterOffcanvas"
+                aria-label="Close"
+              >
+                Clear
+              </button>
+            </div>
+            <div class="col d-flex">
+              <button
+                id="filterBtn"
+                class="btn-green-outline flex-fill"
+                data-bs-dismiss="offcanvas"
+                data-bs-target="#filterOffcanvas"
+                aria-label="Close"
+              >
+                Apply
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <div class="col-12 col-md-11 col-lg-9">
+      <div class="card border-1 rounded-1 expense-card py-2 px-3">
+        <div class="d-flex nowarap mt-2">
+          <button
+            class="button-01 d-lg-none me-2"
+            type="button"
+            data-bs-toggle="offcanvas"
+            data-bs-target="#filterOffcanvas"
+            aria-controls="filterOffcanvas"
+          >
+            Filter
+          </button>
+          <button
+            type="button"
+            class="btn-green"
+            data-bs-toggle="modal"
+            data-bs-target="#addExpenseModal"
+          >
+            Add expense
+          </button>
+          <!-- <p class="ms-auto mb-0 pt-1">Showing {{ expenses.count }} results</p> -->
+          <div id="showNumOfItems" class="ms-auto mb-0 pt-1"></div>
+        </div>
+        <form class="d-flex mt-3" role="search">
+          <input
+            id="searchField"
+            class="form-control me-2"
+            type="text"
+            placeholder="Search"
+            aria-label="Search"
+          />
+          <button id="searchBtn" class="btn-green-outline me-2" type="submit">Search</button>
+          <button id="searchClrBtn" class="btn-brass-outline">Clear</button>
+        </form>
+        <!-- main tale -->
+        <div class="row table-responsive-lg mx-0 mt-3" id="mainTable">
+          <table class="table expense-table table-bordered">
+            <thead>
+              <tr>
+                <th class="col-3">Category</th>
+                <th class="col-2">Amount</th>
+                <th class="col-3">Description</th>
+                <th class="col-3">Date</th>
+                <th class="col-1">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for expense in page_object %}
+              <tr>
+                <td>{{ expense.category }}</td>
+                <td>{{ expense.amount|inr_format }}</td>
+                <td>{{ expense.description }}</td>
+                <td>{{ expense.date }}</td>
+                <td class="d-flex flex-row border-0">
+                  <a
+                    href="{% url 'update-expense' expense.id %}"
+                    class="btn-green-outline-sm me-2"
+                    ><i class="bi bi-pencil-square"></i
+                  ></a>
+                  <a
+                    href="{% url 'delete-expense' expense.id %}"
+                    class="btn-brass-outline-sm"
+                    ><i class="bi bi-trash3"></i
+                  ></a>
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Results table -->
+        <div class="row table-responsive-lg mx-0 mt-3" id="resultsTable">
+          <table class="table expense-table table-bordered">
+            <thead>
+              <tr>
+                <th class="col-3">Category</th>
+                <th class="col-2">Amount</th>
+                <th class="col-3">Description</th>
+                <th class="col-3">Date</th>
+                <th class="col-1">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="output-table-body"></tbody>
+          </table>
+        </div>
+
+        <!--Pagination-->
+        {% if expenses.count > 10 %}
+        <div class="pagination-container">
+          <div class="row justify-content-center mx-0">
+            <div class="col-6 p-0">
+              <nav aria-label="Page navigation">
+                <ul class="pagination ms-0">
+                  <!--Jump to first page-->
+                  {% if page_object.number == 1 %}
+                  <li class="page-item disabled">
+                    <a class="page-link">First</a>
+                  </li>
+                  {% else %}
+                  <li class="page-item">
+                    <a class="page-link" href="?page=1" aria-label="First"
+                      >First</a
+                    >
+                  </li>
+                  {% endif %}
+
+                  <!--Disable previous page button if the current page is the first one-->
+                  {% if page_object.has_previous %}
+                  <li class="page-item">
+                    <a
+                      class="page-link"
+                      href="?page={{ page_object.previous_page_number }}"
+                      aria-label="Previous"
+                    >
+                      <span aria-hidden="true">&laquo;</span>
+                    </a>
+                  </li>
+                  <li class="page-item">
+                    <a
+                      class="page-link"
+                      href="?page={{ page_object.previous_page_number }}"
+                    >
+                      {{page_object.previous_page_number }}</a
+                    >
+                  </li>
+                  {% else %}
+                  <li class="page-item disabled">
+                    <a class="page-link" href="" aria-label="Previous">
+                      <span aria-hidden="true">&laquo;</span>
+                    </a>
+                  </li>
+                  {% endif %}
+
+                  <!--Show current page-->
+                  <li class="page-item active" aria-current="page">
+                    <a class="page-link" href="?page={{ page_object.number }}"
+                      >{{ page_object.number }}</a
+                    >
+                  </li>
+
+                  <!--Disable next page button if the current page is the last one-->
+                  {% if page_object.has_next %}
+                  <li class="page-item">
+                    <a
+                      class="page-link"
+                      href="?page={{ page_object.next_page_number }}"
+                    >
+                      {{page_object.next_page_number }}</a
+                    >
+                  </li>
+                  <li class="page-item">
+                    <a
+                      class="page-link"
+                      href="?page={{ page_object.next_page_number }}"
+                      aria-label="Next"
+                    >
+                      <span aria-hidden="true">&raquo;</span>
+                    </a>
+                  </li>
+                  {% else %}
+                  <li class="page-item disabled">
+                    <a class="page-link" href="" aria-label="Next">
+                      <span aria-hidden="true">&raquo;</span>
+                    </a>
+                  </li>
+                  {% endif %} {% if page_object.number == page_object.paginator.num_pages %}
+                  <li class="page-item disabled">
+                    <a class="page-link">Last</a>
+                  </li>
+                  {% else %}
+                  <li class="page-item">
+                    <a
+                      class="page-link"
+                      href="?page={{ page_object.paginator.num_pages }}"
+                      >Last</a
+                    >
+                  </li>
+                  {% endif %}
+                </ul>
+              </nav>
+            </div>
+            <div class="col-6 p-0 text-end">
+              <p class="normal-text">
+                Showing page {{page_object.number}} of {{page_object.paginator.num_pages}}
+              </p>
+            </div>
+          </div>
+        </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+  {% else %}
+
+  <h4 class="text-center mt-4">You don't have any expenses</h4>
+  <div class="col text-center">
+    <button
+      type="btn-green"
+      class="btn btn-primary"
+      data-bs-toggle="modal"
+      data-bs-target="#addExpenseModal"
+    >
+      Add Expense Now
+    </button>
+  </div>
+  {% endif %}
+</div>
+
+<!-- Add expense Modal -->
+<div
+  class="modal fade"
+  id="addExpenseModal"
+  data-bs-backdrop="static"
+  data-bs-keyboard="false"
+  tabindex="-1"
+  aria-labelledby="addExpenseModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="addExpenseModalLabel">
+          Fill the details
+        </h1>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body p-2">
+        <form class="mx-4" action="{% url 'add-expense' %}" method="POST">
+          {% csrf_token %}
+          <div class="row mb-2">
+            <label class="form-label">Category</label>
+            <select class="form-select" name="category" required>
+              {% for category in categories %}
+              <option value="{{category.name}}">{{category.name}}</option>
+              {% endfor %}
+            </select>
+          </div>
+          <div class="row mb-2">
+            <label class="form-label">Amount</label>
+            <input
+              type="number"
+              name="amount"
+              class="form-control"
+              min="0"
+              step="0.01"
+              required
+            />
+          </div>
+          <div class="row mb-2">
+            <label class="form-label">Description</label>
+            <input
+              type="text"
+              class="form-control"
+              name="description"
+              required
+            />
+          </div>
+          <div class="row mb-2">
+            <label class="form-label">Date</label>
+            <input
+              type="date"
+              name="expense_date"
+              id="expenseDate"
+              class="form-control"
+              required
+            />
+          </div>
+          <div class="row mb-2 mt-4">
+            <button type="submit" id="addExpenseBtn" class="btn btn-success">
+              Add
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<script
+src="https://code.jquery.com/jquery-3.7.0.js"
+integrity="sha256-JlqSTELeR4TLqP0OG9dxM7yDPqX1ox/HfgiSLBj8+kM="
+crossorigin="anonymous"
+></script>
+<script src="{% static 'js/search-expense.js' %}"></script>
+<script src="{% static 'js/filter-expense.js' %}"></script>
+
+{% endblock %}

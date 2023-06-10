@@ -1,0 +1,70 @@
+{% extends 'base.html' %} {% load static%} 
+{% block title %} - expenses {%endblock %} 
+{% block content %}
+
+<div class="row justify-content-center m-0">
+  <div
+    class="col-11 col-md-8 col-lg-6 card border-0 rounded-0 mt-3 p-3 expense-card"
+  >
+    <div class="card-body">
+      <h3 class="text-center mb-2">Update expense</h3>
+      <form class="mx-4" action="{% url 'update-expense' expense.id %}" method="post">
+        {% csrf_token %}
+        <div class="row mb-2">
+          <label class="form-label">Category</label>
+          <select class="form-select" name="category" required>
+            <option selected name="category" value="{{expense.category}}">
+              {{expense.category}}
+            </option>
+            {% for category in categories %}
+            <option value="{{category.name}}">{{category.name}}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <div class="row mb-2">
+          <label class="form-label">Amount</label>
+          <input
+            type="number"
+            name="amount"
+            value="{{expense.amount}}"
+            class="form-control"
+            min="0"
+            step="0.01"
+            required
+          />
+        </div>
+        <div class="row mb-2">
+          <label class="form-label">Description</label>
+          <input
+            type="text"
+            value="{{expense.description}}"
+            class="form-control"
+            name="description"
+            required
+          />
+        </div>
+        <div class="row mb-2">
+          <label class="form-label">Date</label>
+          <input
+            type="date"
+            name="expense_date"
+            value="{{expense.date|date:'Y-m-d'}}"
+            id="expenseDate"
+            class="form-control"
+            required
+          />
+        </div>
+        <div class="col-md-12 text-center mb-2 mt-3">
+          <button
+            type="submit"
+            class="col-12 col-md-7 col-lg-5 btn btn-success"
+          >
+            Update
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

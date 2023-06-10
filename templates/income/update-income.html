@@ -1,0 +1,70 @@
+{% extends 'base.html' %} {% load static%} 
+{% block title %} - Update Income {%endblock %} 
+{% block content %}
+
+<div class="row justify-content-center m-0">
+  <div
+    class="col-11 col-md-8 col-lg-6 card border-0 rounded-0 mt-3 p-3 expense-card"
+  >
+    <div class="card-body">
+      <h3 class="text-center mb-2">Update income</h3>
+      <form class="mx-4" action="{% url 'update-income' income.id %}" method="post">
+        {% csrf_token %}
+        <div class="row mb-2">
+          <label class="form-label">Source</label>
+          <select class="form-select" name="source" required>
+            <option selected name="source" value="{{income.source}}">
+              {{income.source}}
+            </option>
+            {% for source in sources %}
+            <option value="{{source.name}}">{{source.name}}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <div class="row mb-2">
+          <label class="form-label">Amount</label>
+          <input
+            type="number"
+            name="amount"
+            value="{{income.amount}}"
+            class="form-control"
+            min="0"
+            step="0.01"
+            required
+          />
+        </div>
+        <div class="row mb-2">
+          <label class="form-label">Description</label>
+          <input
+            type="text"
+            value="{{income.description}}"
+            class="form-control"
+            name="description"
+            required
+          />
+        </div>
+        <div class="row mb-2">
+          <label class="form-label">Date</label>
+          <input
+            type="date"
+            name="income_date"
+            value="{{income.date|date:'Y-m-d'}}"
+            id="incomeDate"
+            class="form-control"
+            required
+          />
+        </div>
+        <div class="col-md-12 text-center mb-2 mt-3">
+          <button
+            type="submit"
+            class="col-12 col-md-7 col-lg-5 btn btn-success"
+          >
+            Update
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

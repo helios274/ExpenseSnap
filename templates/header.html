@@ -1,0 +1,87 @@
+<header class="header sticky-top">
+    <nav class="navbar navbar-expand-sm">
+      <div class="container-fluid">
+        <a class="navbar-brand ms-3" href="/">ExpenseSnap</a>
+
+        <button
+          class="btn btn-primary d-sm-none"
+          type="button"
+          data-bs-toggle="offcanvas"
+          data-bs-target="#headerOffcanvas"
+          aria-controls="headerOffcanvas"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div
+          class="offcanvas-sm offcanvas-end"
+          tabindex="-1"
+          id="headerOffcanvas"
+          aria-labelledby="headerOffcanvasLabel"
+        >
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="headerOffcanvasLabel">
+              ExpenseSnap
+            </h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="offcanvas"
+              data-bs-target="#headerOffcanvas"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="offcanvas-body">
+            <ul class="navbar-nav me-2">
+              {% if user.is_authenticated %}
+              <li class="nav-item mx-sm-1 d-none d-sm-block">
+                <a class="nav-link" href="{% url 'expense' %}">Expense</a>
+              </li>
+              <li class="nav-item mx-sm-1 d-none d-sm-block">
+                <a class="nav-link" href="{% url 'income' %}">Income</a>
+              </li>
+              <li class="nav-item dropdown d-none d-sm-block">
+                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  {{user.username}}
+                </a>
+                <ul class="dropdown-menu dropdown-menu-end">
+                  <li><a class="dropdown-item" href="{% url 'profile' %}">Account</a></li>
+                  <li><hr class="dropdown-divider"></li>           
+                  <li>
+                    <form action="{% url 'logout' %}" method="POST">
+                      {% csrf_token %}
+                      <button type="submit" class="dropdown-item">Logout</button>
+                    </form>
+                  </li>
+        
+                </ul>
+                <li class="nav-item mx-1 d-block d-sm-none">
+                  <a class="nav-link" href="{% url 'expense' %}">Expense</a>
+                </li>
+                <li class="nav-item mx-1 d-block d-sm-none">
+                  <a class="nav-link" href="{% url 'income' %}">Income</a>
+                </li>
+                <li class="nav-item mx-1 d-block d-sm-none">
+                  <a class="nav-link" href="{% url 'profile' %}">Account</a>
+                </li>
+                <li class="nav-item mx-1 d-block d-sm-none">
+                  <form action="{% url 'logout' %}" method="POST">
+                    {% csrf_token %}
+                    <button type="submit" class="dropdown-item mt-2">Logout</button>
+                  </form>
+                </li>
+              </li>
+              {% else %}
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'login' %}">Login</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'register' %}">Register</a>
+              </li>
+              {% endif %}
+            </ul>
+          </div>
+        </div>
+      </div>
+    </nav>
+  </header>

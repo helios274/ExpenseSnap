@@ -1,0 +1,47 @@
+/* .d-flex {
+    height: 100vh;
+} */
+body {
+    height: 100vh;
+}
+main {
+    height: 100vh;
+    background-color: rgb(53, 53, 53, 0.5)
+}
+.account-card{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+.card {
+    box-shadow: rgb(38, 57, 77) 0px 20px 30px -10px;
+}
+
+p.title {
+    font-size: 32px;
+    font-weight: 400;
+}
+
+.button-s1 {
+    width: 100%;
+    height: 50px;
+    font-size: 20px;
+    font-weight: 600;
+    border: 2px solid rgb(49, 49, 49);
+}
+
+.button-s1:hover {
+    background-color: rgb(49, 49, 49);
+    color:white
+}
+
+.messages {
+    position: fixed;
+    top: 15px;
+    right: 20px;
+    z-index: 9999 !important;
+}
+.messages button {
+    outline: none !important;
+}

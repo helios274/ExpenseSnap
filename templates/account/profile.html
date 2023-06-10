@@ -1,0 +1,143 @@
+{% extends 'base.html' %} {% load static%} {% block title %} - Profile
+{%endblock %} {% block content %}
+
+<div class="row justify-content-center mx-0">
+  <div
+    class="col-11 col-md-8 col-lg-6 card border-0 rounded-0 mt-3 p-3 expense-card"
+  >
+    <div class="card-body">
+      <h4 class="mb-2">Profile Details</h4>
+      <form class="mx-3" action="{% url 'profile' %}" method="POST">
+        {% csrf_token %}
+        <div class="row mb-2 mx-0">
+          <label class="form-label">Username</label>
+          <input
+            type="text"
+            value="{{user.username}}"
+            class="form-control"
+            name="username"
+            required
+          />
+        </div>
+        <div class="row mb-2 mx-0">
+          <label class="form-label">First Name</label>
+          <input
+            type="text"
+            value="{{user.first_name}}"
+            class="form-control"
+            name="first_name"
+            required
+          />
+        </div>
+        <div class="row mb-2 mx-0">
+          <label class="form-label">Last Name</label>
+          <input
+            type="text"
+            value="{{user.last_name}}"
+            class="form-control"
+            name="last_name"
+            required
+          />
+        </div>
+        <div class="row mb-2 mx-0">
+          <label class="form-label">Email</label>
+          <input
+            type="email"
+            value="{{user.email}}"
+            class="form-control"
+            name="description"
+            disabled
+          />
+        </div>
+        <div class="row mb-2 d-flex mt-3 mx-0">
+          <button
+            type="button"
+            class="col-5 col-sm-3 col-md-4 col-lg-3 me-2 btn btn-success"
+            id="editBtn"
+          >
+            Edit
+          </button>
+
+          <button
+            type="submit"
+            class="col-5 col-sm-3 col-md-4 col-lg-3 btn btn-success"
+            id="saveBtn"
+          >
+            Save
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<div class="row justify-content-center mx-0">
+  <div
+    class="col-11 col-md-8 col-lg-6 card border-0 rounded-0 mt-3 p-3 expense-card mb-3"
+  >
+    <div class="card-body">
+      <h4 class="mb-3">Delete Account</h4>
+      <div class="alert alert-danger d-flex align-items-center" role="alert">
+        <div>
+          <i class="bi bi-exclamation-triangle-fill"></i> This is an
+          irreversible process
+        </div>
+      </div>
+      <div class="row mb-2 mt-3 mx-0">
+        <button
+          type="button"
+          class="col-5 col-sm-4 btn btn-danger"
+          data-bs-toggle="modal"
+          data-bs-target="#deleteModal"
+        >
+          Delete
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal -->
+<div
+  class="modal fade"
+  id="deleteModal"
+  tabindex="-1"
+  aria-labelledby="deleteModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="deleteModalLabel">
+          Enter your password for the last time
+        </h1>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+
+      <div class="modal-body">
+        <form class="mx-4" action="{% url 'delete-account' %}" method="POST">
+          {% csrf_token %}
+          <div class="row mb-3">
+            <input
+              type="password"
+              name="password"
+              class="form-control"
+              placeholder="Password"
+              required
+            />
+          </div>
+          <div class="row">
+            <button type="submit" class=" col-6 btn btn-danger">Confirm</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="{% static 'js/profile.js' %}"></script>
+{% endblock %}
