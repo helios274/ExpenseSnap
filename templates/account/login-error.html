@@ -1,24 +1,26 @@
 {% extends 'base.html' %} {% block title %} - expenses {% endblock %} {% block content %}
-<div
-  class="d-flex flex-column justify-content-center align-items-center height-h-f"
->
-  <h1>You need an account to access this page</h1>
-  <div class="d-flex mt-4" style="width: 50vw">
-    <a
-      type="button"
-      href="{% url 'register' %}"
-      class="btn btn-dark flex-fill mx-2"
-      >Create an Account</a
-    >
-    <a
-      type="button"
-      href="{% url 'login' %}"
-      class="btn btn-dark flex-fill mx-2"
-      >Login</a
-    >
-    <button id="goBackButton" class="btn btn-dark flex-fill mx-2">
-      Go Back
-    </button>
+<div>
+  <h1 class="text-center pt-5 mx-1">You need an account to access this page</h1>
+  <div class="d-flex justify-content-center flex-wrap mt-4">
+
+      <a
+        type="button"
+        href="{% url 'register' %}"
+        class="btn-green mx-2 mt-3"
+        >Create an Account</a
+      >
+   
+      <a
+        type="button"
+        href="{% url 'login' %}"
+        class="btn-green mx-2 mt-3"
+        >Login</a
+      >
+
+      <button id="goBackButton" class="btn-green mx-2 mt-3">
+        Go Back
+      </button>
+
   </div>
 </div>
 <script>

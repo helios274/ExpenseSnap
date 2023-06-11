@@ -7,7 +7,7 @@
 
 <div class="container-fluid p-2">
   {% if incomes.count %}
-  <div class="d-flex flex-row justify-content-center mx-3 mx-lg-3 my-3">
+  <div class="d-flex flex-row justify-content-center mx-1 mx-md-3 my-3">
     <!-- Filter Form and filter offcanvas-->
     <div
       class="offcanvas-lg offcanvas-start"
@@ -115,7 +115,8 @@
             data-bs-target="#filterOffcanvas"
             aria-controls="filterOffcanvas"
           >
-            Filter
+          <i class="d-block d-sm-none bi bi-funnel-fill"></i>
+          <span class="d-none d-sm-block">Filter</span>   
           </button>
           <button
             type="button"
@@ -123,9 +124,9 @@
             data-bs-toggle="modal"
             data-bs-target="#addIncomeModal"
           >
-            Add income
+          <span class="d-block d-sm-none">Add</span>
+          <span class="d-none d-sm-block">Add income</span>
           </button>
-          <!-- <p class="ms-auto mb-0 pt-1">Showing {{ expenses.count }} results</p> -->
           <div id="showNumOfItems" class="ms-auto mb-0 pt-1"></div>
         </div>
         <form class="d-flex mt-3" role="search">
@@ -136,8 +137,14 @@
             placeholder="Search"
             aria-label="Search"
           />
-          <button id="searchBtn" class="btn-green-outline me-2" type="submit">Search</button>
-          <button id="searchClrBtn" class="btn-brass-outline">Clear</button>
+          <button id="searchBtn" class="btn-green-outline me-2" type="submit">
+            <i class="d-block d-sm-none bi bi-search"></i>
+            <span class="d-none d-sm-block">Search</span>
+          </button>
+          <button id="searchClrBtn" class="btn-brass-outline">
+            <i class="d-block d-sm-none bi bi-x-circle"></i>
+            <span class="d-none d-sm-block">Clear</span>
+          </button>
         </form>
 
         <!-- main tale -->
@@ -304,10 +311,10 @@
   {% else %}
 
   <h4 class="text-center mt-4">You don't have any incomes</h4>
-  <div class="col text-center">
+  <div class="col text-center mt-4">
     <button
       type="button"
-      class="btn btn-primary"
+      class="btn-green"
       data-bs-toggle="modal"
       data-bs-target="#addIncomeModal"
     >
@@ -331,7 +338,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <h1 class="modal-title fs-5" id="addIncomeModalLabel">
-          Fill the details
+          Add income details
         </h1>
         <button
           type="button"
