@@ -29,9 +29,9 @@ env.read_env()
 SECRET_KEY = env('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = []
 
 
 # Application definition
@@ -47,7 +47,8 @@ INSTALLED_APPS = [
     'home',
     'account',
     'expense',
-    'income'
+    'income',
+    'storages'
 ]
 
 MIDDLEWARE = [
@@ -144,3 +145,10 @@ MESSAGE_TAGS = {
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+AWS_ACCESS_KEY = env('AWS_ACCESS_KEY')
+AWS_ACCESS_KEY_ID = env('AWS_ACCESS_KEY_ID')
+AWS_STORAGE_BUCKET_NAME = env('AWS_STORAGE_BUCKET_NAME')
+DEFAULT_FILE_STORAGE = env('DEFAULT_FILE_STORAGE')
+STATICFILES_STORAGE = env('STATICFILES_STORAGE')
+AWS_S3_CUSTOM_DOMAIN = '%s.s3.amazonaws.com' % AWS_STORAGE_BUCKET_NAME
