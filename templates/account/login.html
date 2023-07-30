@@ -1,10 +1,16 @@
 {% extends 'account/base.html' %} {% load static %} {% block title %} - Login
 {%endblock %} {% block content %}
 
-<div class="col-11 col-sm-10 col-md-8 col-lg-6 card border-0 rounded-3 py-3 px-2 px-sm-3 px-md-5">
+<div
+  class="col-11 col-sm-10 col-md-8 col-lg-6 card border-0 rounded-3 py-3 px-2 px-sm-3 px-md-5"
+>
   <div class="card-body">
-    <h5><a href="/"><i class="bi bi-house-fill"></i></a></h5>
+    <h5>
+      <a href="/"><i class="bi bi-house-fill"></i></a>
+    </h5>
     <p class="title text-center">Welcome back!</p>
+    <p class="m-0 p-0m">test username: test001</p>
+    <p>test password: test001pwwd</p>
     <div class="col text-center mt-4">
       <form action="{% url 'login' %}" method="POST">
         {% csrf_token %}
@@ -35,13 +41,19 @@
         <hr />
         <div class="row mb-4">
           <div class="col d-flex">
-            <button id="submitBtn" type="submit" class="btn btn-lg btn-outline-dark rounded-pill flex-fill">
+            <button
+              id="submitBtn"
+              type="submit"
+              class="btn btn-lg btn-outline-dark rounded-pill flex-fill"
+            >
               Login
             </button>
           </div>
         </div>
         <div class="row mb-3">
-          <a class="link" href="{% url 'register' %}">Don't have an account? Register here</a>
+          <a class="link" href="{% url 'register' %}"
+            >Don't have an account? Register here</a
+          >
         </div>
       </form>
     </div>
